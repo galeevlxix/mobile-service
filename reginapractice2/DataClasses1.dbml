@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="servicedb1" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\servicedb1.mdf;Integrated Security=True" SettingsObjectName="reginapractice2.Properties.Settings" SettingsPropertyName="servicedb1ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.clients" Member="clients">
+    <Type Name="clients">
+      <Column Name="client_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="first_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="last_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="phone_number" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="clients_orders" Member="orders" ThisKey="client_id" OtherKey="client_id" Type="orders" />
+    </Type>
+  </Table>
+  <Table Name="dbo.employees" Member="employees">
+    <Type Name="employees">
+      <Column Name="employee_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="last_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="first_name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="phone_number" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="employees_services_rendered" Member="services_rendered" ThisKey="employee_id" OtherKey="employee_id" Type="services_rendered" />
+    </Type>
+  </Table>
+  <Table Name="dbo.orders" Member="orders">
+    <Type Name="orders">
+      <Column Name="order_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="client_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="order_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="status" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Association Name="orders_services_rendered" Member="services_rendered" ThisKey="order_id" OtherKey="order_id" Type="services_rendered" />
+      <Association Name="clients_orders" Member="clients" ThisKey="client_id" OtherKey="client_id" Type="clients" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.services_rendered" Member="services_rendered">
+    <Type Name="services_rendered">
+      <Column Name="number" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="order_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="employee_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="service_id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="service_date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="employees_services_rendered" Member="employees" ThisKey="employee_id" OtherKey="employee_id" Type="employees" IsForeignKey="true" />
+      <Association Name="orders_services_rendered" Member="orders" ThisKey="order_id" OtherKey="order_id" Type="orders" IsForeignKey="true" />
+      <Association Name="services_services_rendered" Member="services" ThisKey="service_id" OtherKey="service_id" Type="services" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.services" Member="services">
+    <Type Name="services">
+      <Column Name="service_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="service_name" Type="System.String" DbType="NChar(20)" CanBeNull="true" />
+      <Column Name="cost" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="services_services_rendered" Member="services_rendered" ThisKey="service_id" OtherKey="service_id" Type="services_rendered" />
+    </Type>
+  </Table>
+</Database>
